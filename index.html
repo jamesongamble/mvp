@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     <script src='jquery.js'></script>
+     <link rel='stylesheet' type='text/css' href='styles.css'>
+
+  </head>
+  <body>
+    <!-- Scripts may be placed anywhere on a page. But FYI, they block rendering of elements
+     below them until after the scripts load-->
+     <input class='center'> </input>
+      <button type='submit' id='submitURL'>Submit</button>
+     <script>
+      $(document).ready(function() {
+        $('#submitURL').on('click', function() {
+          var urlAppend = $('.center').val(); 
+          urlAppend.replace(' ', '+').toLowerCase();
+          $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: 'https://itunes.apple.com/search?' + 'term=' + urlAppend + '&media=musicVideo',
+          }).done(function(result) {
+            console.log(result);  
+            var resultsArray = result.results; 
+            var song = resultsArray[0];
+            var previewURL = song.previewUrl;
+            $('body').append('<video controls autoplay src="'+previewURL+'" />');
+          });
+        })
+      })
+
+
+    </script>
+
+  </body>
+</html>
